@@ -3,7 +3,24 @@
 *For more information see:*
 https://www.nushell.sh/commands/categories/filters.html
 
-## Open and parse Excel file
+## Table of Contents (Commands)
+
+- [columns](#columns)  
+- [get](#get)  
+- [headers](#headers)  
+- [first](#first)  
+- [last](#last)  
+- [skip](#skip)  
+- [drop](#drop)  
+- [select](#select)  
+- [where](#where)  
+- [values](#values)  
+- [split](#split)  
+- [every](#every)  
+
+## Getting start
+
+Opening and parsing the Excel file
 
 ```
 ♥  : open --raw dnd.xlsx | from xlsx
@@ -15,7 +32,9 @@ https://www.nushell.sh/commands/categories/filters.html
 
 ## Filter Commands
 
-`columns`: Given a record or table, produce a list of its columns' names.
+### columns
+
+Given a record or table, produce a list of its columns' names.
 
 ```
 ♥  : open --raw dnd.xlsx | from xlsx | columns
@@ -25,7 +44,9 @@ https://www.nushell.sh/commands/categories/filters.html
 ╰───┴─────────╯
 ```
 
-`get`: Extract data using a cell path.
+### get
+
+Extract data using a cell path.
 
 ```
 ♥  : open --raw dnd.xlsx | from xlsx | get Summons
@@ -34,28 +55,9 @@ https://www.nushell.sh/commands/categories/filters.html
 ╰────────────╯
 ```
 
-`first`: Return only the first several rows of the input. Counterpart of
-`last`. Opposite of `skip`.
+### headers
 
-```
-♥  : open --raw dnd.xlsx | from xlsx | get Spells | first 5
-╭───┬───────────┬─────────┬───────────┬───────────┬────────────┬────────────┬─────╮
-│ # │  column0  │ column1 │  column2  │  column3  │  column4   │  column5   │ ... │
-├───┼───────────┼─────────┼───────────┼───────────┼────────────┼────────────┼─────┤
-│ 0 │ Name      │ Level   │ School    │ Casting   │ Duration   │ Range      │ ... │
-│   │           │         │           │ Time      │            │            │     │
-│ 1 │ Acid      │    0.00 │ Conjurati │ 1 Action  │ Instantane │ 60 ft      │ ... │
-│   │ Splash    │         │ on        │           │ ous        │            │     │
-│ 2 │ Blade     │    0.00 │ Abjuratio │ 1 Action  │ 1 Round    │ Self       │ ... │
-│   │ Ward      │         │ n         │           │            │            │     │
-│ 3 │ Booming   │    0.00 │ Evocation │ 1 Action  │ 1 Round    │ Self (5    │ ... │
-│   │ Blade     │         │           │           │            │ ft)        │     │
-│ 4 │ Chill     │    0.00 │ Necromanc │ 1 Action  │ 1 Round    │ 120 ft     │ ... │
-│   │ Touch     │         │ y         │           │            │            │     │
-╰───┴───────────┴─────────┴───────────┴───────────┴────────────┴────────────┴─────╯
-```
-
-`headers`: Use the first row of the table as column names.
+Use the first row of the table as column names.
 
 ```
 ♥  : open --raw dnd.xlsx | from xlsx | get Spells | headers | first 5
@@ -76,7 +78,109 @@ https://www.nushell.sh/commands/categories/filters.html
 ╰───┴───────────┴───────┴────────────┴────────────┴────────────┴────────────┴─────╯
 ```
 
-`select`: Select only these columns or rows from the input. Opposite of `reject`.
+### first
+
+Return only the first several rows of the input. Counterpart of
+[last](#last). Opposite of [skip](#skip).
+
+```
+♥  : open --raw dnd.xlsx | from xlsx | get Spells | headers | first 5
+╭───┬────────────┬───────┬────────────┬────────────┬────────────┬─────────────┬─────╮
+│ # │    Name    │ Level │   School   │ Casting    │  Duration  │    Range    │ ... │
+│   │            │       │            │ Time       │            │             │     │
+├───┼────────────┼───────┼────────────┼────────────┼────────────┼─────────────┼─────┤
+│ 0 │ Acid       │  0.00 │ Conjuratio │ 1 Action   │ Instantane │ 60 ft       │ ... │
+│   │ Splash     │       │ n          │            │ ous        │             │     │
+│ 1 │ Blade Ward │  0.00 │ Abjuration │ 1 Action   │ 1 Round    │ Self        │ ... │
+│ 2 │ Booming    │  0.00 │ Evocation  │ 1 Action   │ 1 Round    │ Self (5 ft) │ ... │
+│   │ Blade      │       │            │            │            │             │     │
+│ 3 │ Chill      │  0.00 │ Necromancy │ 1 Action   │ 1 Round    │ 120 ft      │ ... │
+│   │ Touch      │       │            │            │            │             │     │
+│ 4 │ Control    │  0.00 │ Transmutat │ 1 Action   │ Instantane │ 60 ft       │ ... │
+│   │ Flames     │       │ ion        │            │ ous        │             │     │
+╰───┴────────────┴───────┴────────────┴────────────┴────────────┴─────────────┴─────╯
+```
+
+### last
+
+Return only the last several rows of the input. Counterpart of [first](#first).
+Opposite of [drop](#drop).
+
+```
+♥  : open --raw dnd.xlsx | from xlsx | get Spells | headers | last 5
+╭───┬─────────────┬───────┬─────────────┬─────────────┬──────────────┬────────┬─────╮
+│ # │    Name     │ Level │   School    │ Casting     │   Duration   │ Range  │ ... │
+│   │             │       │             │ Time        │              │        │     │
+├───┼─────────────┼───────┼─────────────┼─────────────┼──────────────┼────────┼─────┤
+│ 0 │ Time Stop   │  9.00 │ Transmutati │ 1 Action    │ Instantaneou │ Self   │ ... │
+│   │             │       │ on          │             │ s            │        │     │
+│ 1 │ True        │  9.00 │ Transmutati │ 1 Action    │ 1 Hour       │ 30 ft  │ ... │
+│   │ Polymorph   │       │ on          │             │              │        │     │
+│ 2 │ True Resurr │  9.00 │ Necromancy  │ 1 Hour      │ Instantaneou │ Touch  │ ... │
+│   │ ection      │       │             │             │ s            │        │     │
+│ 3 │ Weird       │  9.00 │ Illusion    │ 1 Action    │ 1 Minute     │ 120 ft │ ... │
+│ 4 │ Wish        │  9.00 │ Conjuration │ 1 Action    │ Instantaneou │ Self   │ ... │
+│   │             │       │             │             │ s            │        │     │
+╰───┴─────────────┴───────┴─────────────┴─────────────┴──────────────┴────────┴─────╯
+```
+
+### skip
+
+Skip the first several rows of the input. Counterpart of [drop](#drop). Opposite of
+[first](#first).
+
+```
+♥  : open --raw dnd.xlsx | from xlsx | get Spells | headers | first 5 | skip 1
+╭───┬────────────┬───────┬────────────┬────────────┬────────────┬─────────────┬─────╮
+│ # │    Name    │ Level │   School   │ Casting    │  Duration  │    Range    │ ... │
+│   │            │       │            │ Time       │            │             │     │
+├───┼────────────┼───────┼────────────┼────────────┼────────────┼─────────────┼─────┤
+│ 0 │ Blade Ward │  0.00 │ Abjuration │ 1 Action   │ 1 Round    │ Self        │ ... │
+│ 1 │ Booming    │  0.00 │ Evocation  │ 1 Action   │ 1 Round    │ Self (5 ft) │ ... │
+│   │ Blade      │       │            │            │            │             │     │
+│ 2 │ Chill      │  0.00 │ Necromancy │ 1 Action   │ 1 Round    │ 120 ft      │ ... │
+│   │ Touch      │       │            │            │            │             │     │
+│ 3 │ Control    │  0.00 │ Transmutat │ 1 Action   │ Instantane │ 60 ft       │ ... │
+│   │ Flames     │       │ ion        │            │ ous        │             │     │
+╰───┴────────────┴───────┴────────────┴────────────┴────────────┴─────────────┴─────╯
+```
+
+### drop
+
+Remove items/rows from the end of the input list/table. Counterpart of [skip](#skip).
+Opposite of [last](#last).
+
+```
+♥  : open --raw dnd.xlsx | from xlsx | get Spells | headers | drop 500
+╭────┬─────────────────┬───────┬───────────────┬──────────────┬───────────────┬─────╮
+│  # │      Name       │ Level │    School     │ Casting Time │   Duration    │ ... │
+├────┼─────────────────┼───────┼───────────────┼──────────────┼───────────────┼─────┤
+│  0 │ Acid Splash     │  0.00 │ Conjuration   │ 1 Action     │ Instantaneous │ ... │
+│  1 │ Blade Ward      │  0.00 │ Abjuration    │ 1 Action     │ 1 Round       │ ... │
+│  2 │ Booming Blade   │  0.00 │ Evocation     │ 1 Action     │ 1 Round       │ ... │
+│  3 │ Chill Touch     │  0.00 │ Necromancy    │ 1 Action     │ 1 Round       │ ... │
+│  4 │ Control Flames  │  0.00 │ Transmutation │ 1 Action     │ Instantaneous │ ... │
+│  5 │ Create Bonfire  │  0.00 │ Conjuration   │ 1 Action     │ 1 Minute      │ ... │
+│  6 │ Dancing Lights  │  0.00 │ Evocation     │ 1 Action     │ 1 Minute      │ ... │
+│  7 │ Druidcraft      │  0.00 │ Transmutation │ 1 Action     │ Instantaneous │ ... │
+│  8 │ Eldritch Blast  │  0.00 │ Evocation     │ 1 Action     │ Instantaneous │ ... │
+│  9 │ Encode Thoughts │  0.00 │ Enchantment   │ 1 Action     │ 8 Hours       │ ... │
+│ 10 │ Fire Bolt       │  0.00 │ Evocation     │ 1 Action     │ Instantaneous │ ... │
+│ 11 │ Friends         │  0.00 │ Enchantment   │ 1 Action     │ 1 Minute      │ ... │
+│ 12 │ Frostbite       │  0.00 │ Evocation     │ 1 Action     │ Instantaneous │ ... │
+│ 13 │ Green-Flame     │  0.00 │ Evocation     │ 1 Action     │ Instantaneous │ ... │
+│    │ Blade           │       │               │              │               │     │
+│ 14 │ Guidance        │  0.00 │ Divination    │ 1 Action     │ 1 Minute      │ ... │
+│ 15 │ Gust            │  0.00 │ Transmutation │ 1 Action     │ Instantaneous │ ... │
+│ 16 │ Infestation     │  0.00 │ Conjuration   │ 1 Action     │ Instantaneous │ ... │
+│ 17 │ Light           │  0.00 │ Evocation     │ 1 Action     │ 1 Hour        │ ... │
+│ 18 │ Lightning Lure  │  0.00 │ Evocation     │ 1 Action     │ Instantaneous │ ... │
+╰────┴─────────────────┴───────┴───────────────┴──────────────┴───────────────┴─────╯
+```
+
+### select
+
+Select only these columns or rows from the input. Opposite of [reject](#reject).
 
 ```
 ♥  : open --raw dnd.xlsx | from xlsx | get Spells | headers | select 424
@@ -101,7 +205,40 @@ select Name Details
 ╰───┴──────────────┴──────────────────────────────────────────────────────────────╯
 ```
 
-`where`: Filter values based on a row condition.
+### reject
+
+Remove the given columns or rows from the table. Opposite of [select](#select).
+
+```
+♥  : open --raw dnd.xlsx | from xlsx | get Spells | headers | drop 500 | reject 7
+╭────┬─────────────────┬───────┬───────────────┬──────────────┬───────────────┬─────╮
+│  # │      Name       │ Level │    School     │ Casting Time │   Duration    │ ... │
+├────┼─────────────────┼───────┼───────────────┼──────────────┼───────────────┼─────┤
+│  0 │ Acid Splash     │  0.00 │ Conjuration   │ 1 Action     │ Instantaneous │ ... │
+│  1 │ Blade Ward      │  0.00 │ Abjuration    │ 1 Action     │ 1 Round       │ ... │
+│  2 │ Booming Blade   │  0.00 │ Evocation     │ 1 Action     │ 1 Round       │ ... │
+│  3 │ Chill Touch     │  0.00 │ Necromancy    │ 1 Action     │ 1 Round       │ ... │
+│  4 │ Control Flames  │  0.00 │ Transmutation │ 1 Action     │ Instantaneous │ ... │
+│  5 │ Create Bonfire  │  0.00 │ Conjuration   │ 1 Action     │ 1 Minute      │ ... │
+│  6 │ Dancing Lights  │  0.00 │ Evocation     │ 1 Action     │ 1 Minute      │ ... │
+│  7 │ Eldritch Blast  │  0.00 │ Evocation     │ 1 Action     │ Instantaneous │ ... │
+│  8 │ Encode Thoughts │  0.00 │ Enchantment   │ 1 Action     │ 8 Hours       │ ... │
+│  9 │ Fire Bolt       │  0.00 │ Evocation     │ 1 Action     │ Instantaneous │ ... │
+│ 10 │ Friends         │  0.00 │ Enchantment   │ 1 Action     │ 1 Minute      │ ... │
+│ 11 │ Frostbite       │  0.00 │ Evocation     │ 1 Action     │ Instantaneous │ ... │
+│ 12 │ Green-Flame     │  0.00 │ Evocation     │ 1 Action     │ Instantaneous │ ... │
+│    │ Blade           │       │               │              │               │     │
+│ 13 │ Guidance        │  0.00 │ Divination    │ 1 Action     │ 1 Minute      │ ... │
+│ 14 │ Gust            │  0.00 │ Transmutation │ 1 Action     │ Instantaneous │ ... │
+│ 15 │ Infestation     │  0.00 │ Conjuration   │ 1 Action     │ Instantaneous │ ... │
+│ 16 │ Light           │  0.00 │ Evocation     │ 1 Action     │ 1 Hour        │ ... │
+│ 17 │ Lightning Lure  │  0.00 │ Evocation     │ 1 Action     │ Instantaneous │ ... │
+╰────┴─────────────────┴───────┴───────────────┴──────────────┴───────────────┴─────╯
+```
+
+### where
+
+Filter values based on a row condition.
 
 ```
 ♥  : open --raw dnd.xlsx | from xlsx | get Spells | headers | where Name == 'Wish'
@@ -114,7 +251,9 @@ select Name Details
 ╰───┴──────┴───────┴─────────────┴─────────────┴─────────────┴───────┴──────┴─────╯
 ```
 
-`values`: Given a record or table, produce a list of its columns' values.
+### values
+
+Given a record or table, produce a list of its columns' values.
 
 ```
 ♥  : open --raw dnd.xlsx | from xlsx | get Spells | get 0 | values
@@ -204,7 +343,9 @@ where Name == 'Wish' | select Details |  get 0 | values
 ╰───┴─────────────────────────────────────────────────────────────────────────────╯
 ```
 
-`split`: Split a string into multiple rows using a separator.
+### split
+
+Split a string into multiple rows using a separator.
 
 ```
 ♥  : open --raw dnd.xlsx | from xlsx | get Spells | headers |
@@ -271,7 +412,9 @@ split row "\n" | get 0
 Wish is the mightiest spell a mortal creature can cast. By simply speaking aloud, you can alter the very foundations of reality in accord with your desires.
 ```
 
-`every`: Show (or skip) every n-th row, starting from the first one:
+### every
+
+Show (or skip) every n-th row, starting from the first one:
 
 ```
 ♥  : open --raw dnd.xlsx | from xlsx | get Spells | headers |
