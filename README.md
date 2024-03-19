@@ -1,15 +1,6 @@
 # Nushell Data Wizardry
 
-*Playing with a `dnd.xlsx` file and exploring nushell's magic*
-
-```nu
-♥  : ls dnd.xlsx
-╭───┬──────────┬──────┬───────────┬───────────────╮
-│ # │   name   │ type │   size    │   modified    │
-├───┼──────────┼──────┼───────────┼───────────────┤
-│ 0 │ dnd.xlsx │ file │ 210.4 KiB │ 8 minutes ago │
-╰───┴──────────┴──────┴───────────┴───────────────╯
-```
+*Nushell's magic for data manipulation*
 
 ---
 
