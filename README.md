@@ -1,6 +1,6 @@
 # Nushell Data Wizardry
 
-*Nushell's magic for data manipulation*
+*Nushell's ~commands~ magic for data manipulation*
 
 ---
 
