@@ -3,7 +3,17 @@
 *For more information see:*
 https://www.nushell.sh/commands/categories/filters.html
 
-## Commands
+## Open and parse Excel file
+
+```
+♥  : open --raw dnd.xlsx | from xlsx
+╭─────────┬──────────────────╮
+│ Spells  │ [table 520 rows] │
+│ Summons │ [list 0 items]   │
+╰─────────┴──────────────────╯
+```
+
+## Filter Commands
 
 `columns`: Given a record or table, produce a list of its columns' names.
 
@@ -13,6 +23,15 @@ https://www.nushell.sh/commands/categories/filters.html
 │ 0 │ Spells  │
 │ 1 │ Summons │
 ╰───┴─────────╯
+```
+
+`get`: Extract data using a cell path.
+
+```
+♥  : open --raw dnd.xlsx | from xlsx | get Summons
+╭────────────╮
+│ empty list │
+╰────────────╯
 ```
 
 `first`: Return only the first several rows of the input. Counterpart of
