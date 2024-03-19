@@ -13,6 +13,7 @@ https://www.nushell.sh/commands/categories/filters.html
 - [skip](#skip)  
 - [drop](#drop)  
 - [select](#select)  
+- [reject](#reject)  
 - [where](#where)  
 - [values](#values)  
 - [split](#split)  
