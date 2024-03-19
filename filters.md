@@ -1,8 +1,9 @@
 # Filtering
 
-For more information see:
+*For more information see:*
 https://www.nushell.sh/commands/categories/filters.html
 
+## Commands
 
 `columns`: Given a record or table, produce a list of its columns' names.
 
